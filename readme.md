@@ -2,4 +2,4 @@
 
 ### O repositório consiste em anotações e exercícios pra aperfeiçoar as habilidades com o Django.
 
-### O código encontra-se na branch develop.
+### O código encontra-se na branch developer.
