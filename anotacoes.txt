@@ -1,0 +1,89 @@
+- Instalação do django : pip install django
+- Criação do projeto : django-adimin startproject nome_projeto . (o ponto no final é para não criar um subdiretório.)
+
+- Arquivos que compõe o projeto django:
+    - manage.py : Gerenciamento
+    - __init__.py : Transforma o diretório em um pacote.
+    - settings.py : Configurações Django do projeto.
+    - urls.py : Arquivos de rotas
+    - wsgi.py : Exclusivo par publicação da aplicação.
+
+- Criando uma aplicação:
+    - django-admin startapp nome_da_aplicação
+    - É criado um diretório com o nome da aplicação
+    - migrations.py : Armazena as migrações dos bancos de dados
+    - admin : É para adicionar modelos que refletem no admin do django
+    - models : Criação das classes, os models que vão persistir no projeto
+    - tests : criação dos testes
+    - views : criação das funções onde chama as rotas com a visualização dos templates
+    
+    obs: para cada startapp tem que navegar até o diretório principal, settings.py, INSTALLED_APPS e adicionar
+    a aplicação criada. 
+
+- O padrão mtv do Django
+    - models templates views
+
+- Configurações do django
+    - O django vem com um servidor web onde podemos rodar a aplicação localmente.
+    - Para rodar o projeto: no diretório raiz abrir o terminal e rodar o camando python manage.py runserver
+
+- views no django
+    - Uma função que recebe uma requisição e retorna uma renderização da requisição com um template html.
+    ex:
+        def index(request):
+            return render(request, 'index.html')
+
+- Rotas no djandgo
+    - É um conjunto de padrões que o django vai usar para comparar com a url recebida para encontar a resposta correta
+    - No arquivo urls do projeto importar as views e adicionar ao urlpatterns
+    ex:
+        urlpatterns = [
+            path('', index)
+        ]
+    
+    obs: Não é ideal criar todas as rotas no arquivo urls principal do projeto
+
+    - Forma ideal:
+        No arquivo url do projeto importar do django o include e adicionar ao path o include e onde as rotas estão.
+
+        ex: from django.urls import path, include
+
+            urlpatterns = [
+                path('admin/', admin.site.urls),
+                path('', include(aplicação.urls))
+            ]
+    obs: Tem que ser criado um arquivo urls.py, pois será chamada no include.
+        - nesse arquivo tem que ser importado:
+            from django.urls import path
+            from .views import as views criadas
+        - É necessário ser criada uma variável igual no arquivo urls do projeto
+        ex:
+             urlpatterns = [
+                path('', views1)
+        ]
+
+- Templates no django
+    - Um template define a estrutura  ou layout de um arquivo(como uma página html)
+    - O django tem um forma própria de interagir com uma página html,
+      para chamar um código python no html tem que abrir e fechar chaves duplas.
+      ex: {{Bloco de código}} 
+
+-  Models no django
+    - Definem a estrutura dos dados armazenados, incluindo os tipos de campos e possivelmente 
+      também o seu tamanho máximo.
+    - Na aplicação criada em models deve-se criar a classe com o model desejado.
+    ex:
+        class Produto(models.Model):
+            nome = models.Charfield('nome', max_lenght=100)
+            preco = models.DecimalField('preço', decimal_places=2, max_digits=10)
+            estoque = models.IntegerField('qtd estoque')
+    
+    - Diretório migrations : Armazena o histórico do banco de dados
+    
+- Área administrativa do django
+    - Criação de um usuário p/ a área adm : python manage.py createsuperuser
+    - Arquivo admin.py
+        - Registrar os models criados
+    - Para uma melhor visualização no admin do model é só criar uma classe com o list_display
+        class ProdutoAdmin(admin.ModelAdmin):
+            list_display = ('nome', 'preco', 'estoque')
